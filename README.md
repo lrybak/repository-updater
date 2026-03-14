@@ -135,14 +135,17 @@ apps:
     repository: hassio-addons/app-example
     target: example
     image: hassioaddons/example-{arch}
+    branch: develop
   another:
     repository: hassio-addons/app-another
     target: homebridge
     image: ghcr.io/hassio-addons/test-{arch}
+    branch: develop
   demo:
     repository: hassio-addons/app-demo
     target: src
     image: ghcr.io/hassio-addons/demo/{arch}
+    branch: develop
 ```
 
 The target in the apps repository is specified as the key for each app,
@@ -161,6 +164,14 @@ Finally, the `image` key defines the Docker container images on Docker Hub
 or the GitHub Container Registry for this app. `{arch}` can be used as a
 placeholder for the architecture and is automatically replaced internally by
 the Repository Updater.
+
+The `branch` key is optional and only applies to the `edge` channel.
+  When set, the updater resolves the latest version from the most recent
+  commit on the specified branch instead of the repository's default branch.
+  This is useful when edge development happens on a branch other than
+  the repository default (e.g., `develop` instead of `main`).
+  For `stable` and `beta` channels, this key is ignored as versioning
+  is based on GitHub Releases.
 
 ## Apps Repository README template
 
