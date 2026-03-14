@@ -155,6 +155,7 @@ class Repository:
                         or app_config["repository"] == app
                         or target == app
                     ),
+                    branch=app_config.get("branch"),
                 )
             )
         click.echo(crayons.cyan("-" * 50, bold=True))

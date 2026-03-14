@@ -65,6 +65,7 @@ class App:
         app_target: str,
         channel: str,
         updating: bool,
+        branch: str | None = None,
     ):
         """Initialize a new Home Assistant app object."""
         self.github = github
@@ -77,6 +78,7 @@ class App:
         self.latest_is_release = True
         self.updating = updating
         self.channel = channel
+        self.branch = branch
         self.current_version = None
         self.latest_release = None
         self.latest_commit = None
@@ -209,7 +211,8 @@ class App:
             self.latest_commit = self.app_repository.get_commit(ref.object.sha)
 
         if channel == CHANNEL_EDGE:
-            last_commit = self.app_repository.get_commits()[0]
+            kwargs = {"sha": self.branch} if self.branch else {}
+            last_commit = self.app_repository.get_commits(**kwargs)[0]
             if not self.latest_commit or last_commit.sha != self.latest_commit.sha:
                 self.latest_version = last_commit.sha[:7]
                 self.latest_commit = last_commit
